@@ -65,7 +65,7 @@ class Handler {
             'description' => $command['description'],
         ];
 
-        if (array_key_exists('type', $command)) {
+        if ($builder['type'] == 1) {
             $builder['options'] = array_key_exists('options', $command) ? $command['options'] : [];
         }
 

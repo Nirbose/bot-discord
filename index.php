@@ -8,6 +8,8 @@ use Sti2d\Revisobot\App\Handler;
 
 require_once(dirname(__FILE__) . '/vendor/autoload.php');
 
+require_once(dirname(__FILE__) . '/src/helpers.php');
+
 Dotenv::createImmutable(__DIR__)->load();
 
 $bot = new Discord([

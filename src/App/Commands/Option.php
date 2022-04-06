@@ -2,9 +2,7 @@
 
 namespace Sti2d\Revisobot\App\Commands;
 
-use Discord\Parts\Interactions\Command\Option as CommandOption;
-
-class Option {
+class Option implements \JsonSerializable {
 
     private array $builder;
 
@@ -30,9 +28,9 @@ class Option {
     /**
      * Set type of option
      * 
-     * @param CommandOption $type
+     * @param int $type
      */
-    public function setType(CommandOption $type): self
+    public function setType(int $type): self
     {
         $this->builder['type'] = $type;
 
@@ -46,7 +44,16 @@ class Option {
         return $this;
     }
 
-    public function __toArray(): array
+    public function addChoices(OptionChoice ...$choices): self
+    {
+        foreach ($choices as $choice) {
+            $this->builder['choices'][] = $choice->toArray();
+        }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
     {
         return $this->builder;
     }

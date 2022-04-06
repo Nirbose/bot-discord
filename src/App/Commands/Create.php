@@ -52,8 +52,7 @@ class Create {
      */
     public function setOptions(Option ...$options): self
     {
-        var_dump((array)$options);
-        $this->inject(['options' => (array)$options]);
+        $this->inject(['options' => get_builder($options)]);
 
         return $this;
     }
