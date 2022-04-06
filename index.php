@@ -1,6 +1,8 @@
 <?php
 
 use Discord\Discord;
+use Discord\Parts\Channel\Message;
+use Discord\Parts\Interactions\Interaction;
 use Discord\WebSockets\Event;
 use Dotenv\Dotenv;
 use Sti2d\Revisobot\App\Commands\Collection;
@@ -27,6 +29,14 @@ $bot->on('ready', function (Discord $discord) {
     
     Collection::each(function ($name, $command) use ($handler) {
         $handler->generateCommand($name);
+    });
+
+    $discord->on(Event::MESSAGE_CREATE, function (Message $message) use ($handler) {
+        $handler->handle($message);
+    });
+
+    $discord->on(Event::INTERACTION_CREATE, function (Interaction $message) use ($handler) {
+        $handler->handle($message);
     });
 });
 

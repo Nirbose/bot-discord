@@ -48,6 +48,10 @@ class Handler {
     {
         $command = Collection::get($name);
 
+        if (!isset($command)) {
+            return;
+        }
+
         if (array_key_exists('isSlash', $command)) {
             $this->slashBuilder($command);
         }
