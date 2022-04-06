@@ -1,0 +1,19 @@
+{
+    "name": "sti2d/revisobot",
+    "description": "Bot de r\u0000vision pour la classe Terminal STI2D",
+    "require": {
+        "team-reflex/discord-php": "^7.0",
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sti2d\\Revisobot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nirbose",
+            "email": "nirbose2@gmail.com"
+        }
+    ]
+}
