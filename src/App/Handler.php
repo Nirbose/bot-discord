@@ -13,63 +13,71 @@ class Handler {
     private Discord $discord;
 
     /**
-     * @var Message|Interaction
-     */
-    private $message;
-
-    /**
      * Constructor
      * 
      * @param Discord $discord
-     * @param Message|Interaction $message
      */
-    public function __construct(Discord $discord, $message)
+    public function __construct(Discord $discord)
     {
-        $this->message = $message;
+        $this->discord = $discord;
     }
 
     /**
      * Handle message
      * 
+     * @param Message|Interaction $message
      * @return void
      */
-    public function handle()
+    public function handle($message)
     {
-        if ($this->message instanceof Message) {
-            $content = $this->message->content;
+        if ($message instanceof Message) {
+            $content = $message->content;
 
             // Command name
             $name = substr($content, 1, strpos($content, ' '));
         }
 
-        if ($this->message instanceof Interaction) {
-            $name = $this->message->data->name;
+        if ($message instanceof Interaction) {
+            $name = $message->data->name;
         }
 
+        $this->generateCommand($name, $message);
+    }
+
+    public function generateCommand(string $name, $message = null)
+    {
         $command = Collection::get($name);
 
         if (array_key_exists('isSlash', $command)) {
             $this->slashBuilder($command);
         }
 
-        if ($command) {
-            $command['exec']($this->message);
+        if ($command && !is_null($message)) {
+            $command['exec']($message);
         }
     }
 
     public function slashBuilder(array $command): void
     {
         $builder = [
+            'type' => array_key_exists('type', $command) ? $command['type'] : 1,
             'name' => $command['name'],
             'description' => $command['description'],
-            'options' => array_key_exists('options', $command) ? $command['options'] : [],
         ];
+
+        if (array_key_exists('type', $command)) {
+            $builder['options'] = array_key_exists('options', $command) ? $command['options'] : [];
+        }
 
         $slash = new Command($this->discord, $builder);
 
         if (array_key_exists('guilds', $command)) {
             foreach ($command['guilds'] as $guild) {
-                $this->discord->guilds->get('id', $guild)->commands->save($slash);
+                $guild = $this->discord->guilds->get('id', $guild);
+                
+                if (!is_null($guild)) {
+                    $guild->commands->save($slash);
+                }
             }
         } else {
             $this->discord->application->commands->save($slash);

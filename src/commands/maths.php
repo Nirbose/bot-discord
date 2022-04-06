@@ -9,4 +9,6 @@ Command::new('maths', 'salut')
     $i->respondWithMessage(
         MessageBuilder::new()->setContent('Ceci est un test')
     );
-});
+})
+->setIsSlash(true)
+->setGuilds('773468731702640661', '781105165754433537');

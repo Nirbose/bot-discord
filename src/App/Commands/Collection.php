@@ -14,11 +14,12 @@ class Collection {
      * Add item to collection
      * 
      * @param string $name
+     * @param string|int|array $key
      * @param mixed $value
      * @return void
      */
-    public static function add(string $name, $value) {
-        self::$commands[$name] = $value;
+    public static function add(string $name, $key, $value) {
+        self::$commands[$name][$key] = $value;
     }
 
     /**
@@ -29,7 +30,19 @@ class Collection {
      */
     public static function get(string $name): mixed
     {
-        self::$commands[$name];
+        return self::$commands[$name];
+    }
+
+    /**
+     * Each item in collection with callback
+     * 
+     * @param callable $callback
+     * @return void
+     */
+    public static function each(callable $callback) {
+        foreach (self::$commands as $name => $value) {
+            $callback($name, $value);
+        }
     }
 
 }

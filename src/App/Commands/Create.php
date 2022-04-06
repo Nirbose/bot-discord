@@ -11,8 +11,6 @@ class Create {
      */
     private string $name;
 
-    private array $data;
-
     /**
      * New command
      *
@@ -25,12 +23,10 @@ class Create {
         $self = new self();
         
         $self->name = $name;
-        $self->data = [
-            'description' => $description,
-            'exec' => function() {},
-        ];
 
-        Collection::add($self->name, $self->data);
+        Collection::add($self->name, 'name', $name);
+        Collection::add($self->name, 'description', $description);
+        Collection::add($self->name, 'exec', function() {});
 
         return $self;
     }
@@ -96,7 +92,13 @@ class Create {
      */
     private function inject(array $data): void
     {
-        Collection::add($this->name, $data);
+        if (count(array_values($data)) > 1) {
+            $value = array_values($data);
+        } else {
+            $value = array_values($data)[0];
+        }
+
+        Collection::add($this->name, array_key_first($data), $value);
     }
 
 }
