@@ -23,18 +23,46 @@ Command::new('maths', 'Commande pour les chapitres de Maths')
         10 => "",
     ];
 
-    $i->respondWithMessage(
-        MessageBuilder::new()->setEmbeds([
+    $image = $images[$i->data->options->get('name', 'chapitres')->value];
+
+    if (is_array($image)) {
+        $embeds = [
             [
                 'color' => hexdec("#5865F2"),
-                'title' => 'Maths',
+                'title' => 'Physique',
                 'description' => 'Chapitre ' . $i->data->options->get('name', 'chapitres')->value,
                 'image' => [
                     'url' => $images[$i->data->options->get('name', 'chapitres')->value],
                 ],
             ],
-        ])
-    );
+        ];
+
+        for ($j = 1; $j < count($image); $j++) {
+            $embeds[] = [
+                'color' => hexdec("#5865F2"),
+                'image' => [
+                    'url' => $image[$j],
+                ],
+            ];
+        }
+
+        $i->respondWithMessage(
+            MessageBuilder::new()->setEmbeds($embeds)
+        );
+    } else {
+        $i->respondWithMessage(
+            MessageBuilder::new()->setEmbeds([
+                [
+                    'color' => hexdec("#5865F2"),
+                    'title' => 'Physique',
+                    'description' => 'Chapitre ' . $i->data->options->get('name', 'chapitres')->value,
+                    'image' => [
+                        'url' => $images[$i->data->options->get('name', 'chapitres')->value],
+                    ],
+                ],
+            ])
+        );
+    }
 })
 ->setIsSlash(true)
 ->setOptions(
