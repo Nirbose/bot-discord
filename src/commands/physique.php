@@ -9,8 +9,33 @@ use Sti2d\Revisobot\App\Commands\OptionChoice;
 
 Command::new('physique', 'Commande pour les chapitres de Physique')
 ->setExec(function (Interaction $i) {
+    $images = [
+        1 => "",
+        2 => "",
+        3 => "",
+        4 => "",
+        5 => "",
+        6 => "",
+        7 => "",
+        8 => "",
+        9 => "",
+        10 => "",
+        11 => "",
+        12 => "",
+        13 => "",
+    ];
+
     $i->respondWithMessage(
-        MessageBuilder::new()->setContent('Ceci est un test')
+        MessageBuilder::new()->setEmbeds([
+            [
+                'color' => hexdec("#5865F2"),
+                'title' => 'Physique',
+                'description' => 'Chapitre ' . $i->data->options->get('name', 'chapitres')->value,
+                'image' => [
+                    'url' => $images[$i->data->options->get('name', 'chapitres')->value],
+                ],
+            ],
+        ])
     );
 })
 ->setIsSlash(true)

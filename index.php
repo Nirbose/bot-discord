@@ -14,6 +14,8 @@ require_once(dirname(__FILE__) . '/src/helpers.php');
 
 Dotenv::createImmutable(__DIR__)->load();
 
+define('ROOT', __DIR__);
+
 $bot = new Discord([
     'token' => $_ENV['TOKEN'],
 ]);
